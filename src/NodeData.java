@@ -3,15 +3,7 @@ import java.util.ArrayList;
 /**
  * Record for storing a Node and a Path
  */
-public record NodeData(Node n, ArrayList<Node> path) {
-
-    public Node getNode() {
-        return n;
-    }
-
-    public ArrayList<Node> getPath() {
-        return path;
-    }
+public record NodeData(Node node, ArrayList<Node> path) {
 
     /**
      * Method to get the current path as a Node Array

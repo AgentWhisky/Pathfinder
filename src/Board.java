@@ -80,7 +80,7 @@ public class Board {
      * @return if the point is on the board
      */
     public boolean isValidNode(Node n) {
-        return (n.getX() >= 0 && n.getX() < getHeight()) && (n.getY() >= 0 && n.getY() < getWidth());
+        return (n.x() >= 0 && n.x() < getHeight()) && (n.y() >= 0 && n.y() < getWidth());
     }
 
     /**
@@ -114,7 +114,7 @@ public class Board {
      * @return the String at point
      */
     public String getTile(Node n) {
-        return board[n.getX()][n.getY()];
+        return board[n.x()][n.y()];
     }
     /**
      * Method to get the Height of the board
@@ -155,7 +155,7 @@ public class Board {
      */
     public void setWall(Node n) {
         if(isValidNode(n)) {
-            board[n.getX()][n.getY()] = WALL;
+            board[n.x()][n.y()] = WALL;
         }
     }
 
@@ -167,7 +167,7 @@ public class Board {
      */
     public void setCost(Node n, int cost) {
         if(isValidNode(n)) {
-            board[n.getX()][n.getY()] = "" + cost;
+            board[n.x()][n.y()] = "" + cost;
         }
     }
 
@@ -182,8 +182,8 @@ public class Board {
 
         ArrayList<Node> neighbors = new ArrayList<>();
 
-        int x = n.getX();
-        int y = n.getY();
+        int x = n.x();
+        int y = n.y();
 
         // N,S,E,W
         Node north = new Node(x-1, y);
@@ -216,9 +216,9 @@ public class Board {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < getWidth(); i++) {
+        for(int i = 0; i < getHeight(); i++) {
             sb.append("[");
-            for(int j = 0; j < getHeight(); j++) {
+            for(int j = 0; j < getWidth(); j++) {
                 sb.append(board[i][j]);
                 if(j < getHeight()-1) {
                     sb.append(",");

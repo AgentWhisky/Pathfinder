@@ -9,22 +9,26 @@ public class PathAlgorithms {
      * @param b is the given board
      * @return a path between start and finish or null if none exists
      */
-    public static Node[] depthFirstSearch(Node start, Node finish, Board b) {
+    public static PathResults depthFirstSearch(Node start, Node finish, Board b) {
 
         Stack<NodeData> stack = new Stack<>();
-        stack.push(new NodeData(start, new ArrayList<>()));
+
+        ArrayList<Node> path = new ArrayList<>();
+        path.add(start);
+        stack.push(new NodeData(start, path));
 
         HashSet<Node> visitedNodes = new HashSet<>();
 
         while(!stack.isEmpty()) {
             NodeData nodeData = stack.pop();
 
-            Node curNode = nodeData.getNode();
+            Node curNode = nodeData.node();
 
             // Point is the finish
             if(curNode.equals(finish)) {
-                nodeData.getPath().add(curNode);
-                return nodeData.getPathAsArray();
+                nodeData.path().add(curNode);
+
+                return new PathResults(b, visitedNodes, nodeData.getPathAsArray());
             }
 
             // Expand Node
@@ -34,7 +38,7 @@ public class PathAlgorithms {
                 Node[] neighbors = b.getNeighbors(curNode);
 
                 for(Node n : neighbors) {
-                    ArrayList<Node> newPath = new ArrayList<>(nodeData.getPath()); // Copy Path
+                    ArrayList<Node> newPath = new ArrayList<>(nodeData.path()); // Copy Path
                     newPath.add(n); // Add Current Node to Path
                     stack.push(new NodeData(n, newPath));
                 }
@@ -50,22 +54,27 @@ public class PathAlgorithms {
      * @param b is the given board
      * @return a path between start and finish or null if none exists
      */
-    public static Node[] breadthFirstSearch(Node start, Node finish, Board b) {
+    public static PathResults breadthFirstSearch(Node start, Node finish, Board b) {
 
         Queue<NodeData> queue = new LinkedList<>();
-        queue.add(new NodeData(start, new ArrayList<>()));
+
+        ArrayList<Node> path = new ArrayList<>();
+        path.add(start);
+        queue.add(new NodeData(start, path));
 
         HashSet<Node> visitedNodes = new HashSet<>();
+
 
         while(!queue.isEmpty()) {
             NodeData nodeData = queue.poll();
 
-            Node curNode = nodeData.getNode();
+            Node curNode = nodeData.node();
 
             // Point is the finish
             if(curNode.equals(finish)) {
-                nodeData.getPath().add(curNode);
-                return nodeData.getPathAsArray();
+                nodeData.path().add(curNode);
+
+                return new PathResults(b, visitedNodes, nodeData.getPathAsArray());
             }
 
             // Expand Node
@@ -75,7 +84,7 @@ public class PathAlgorithms {
                 Node[] neighbors = b.getNeighbors(curNode);
 
                 for(Node n : neighbors) {
-                    ArrayList<Node> newPath = new ArrayList<>(nodeData.getPath()); // Copy Path
+                    ArrayList<Node> newPath = new ArrayList<>(nodeData.path()); // Copy Path
                     newPath.add(n); // Add Current Node to Path
                     queue.add(new NodeData(n, newPath));
                 }
@@ -85,24 +94,30 @@ public class PathAlgorithms {
         return null;
     }
 
-    public static void main(String[] args) {
-        Board b = new Board("boards/board-easy1");
-        System.out.println(b);
 
 
-        Node start = new Node(2, 0);
-        Node finish = new Node(4, 4);
-        Node[] dfsPath = depthFirstSearch(start, finish, b);
-        Node[] bfsPath = breadthFirstSearch(start, finish, b);
 
-        System.out.println("---DFS---");
-        for(Node n : dfsPath) {
-            System.out.println(n);
+    /**
+     * Method to generate a new board string of given size
+     * @param width is the given width
+     * @param height is the given height
+     * @param max is the maximum cost (0-max)
+     */
+    public static void genBoard(int width, int height, int max) {
+        Random rand = new Random();
+
+        System.out.println("-----------------");
+        System.out.println(width + "," + height);
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                System.out.print(rand.nextInt(max));
+                if(j < height-1) {
+                    System.out.print(",");
+                }
+            }
+            System.out.println();
         }
 
-        System.out.println("---BFS---");
-        for(Node n : bfsPath) {
-            System.out.println(n);
-        }
+        System.out.println("-----------------");
     }
 }
