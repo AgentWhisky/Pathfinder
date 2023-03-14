@@ -1,9 +1,10 @@
 package maze;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public record PathResult(String[][] maze, Node start, Node goal, LinkedList<Node> path,
-                         LinkedList<Node> expandedOrder) {
+                         LinkedList<Node> expandedOrder, HashSet<Node> expanded, int pathCost) {
     /**
      * Constructor - Creates a pathResult object to store all information to display pathfinder
      * @param maze          is the 2D String maze
@@ -11,28 +12,10 @@ public record PathResult(String[][] maze, Node start, Node goal, LinkedList<Node
      * @param goal          is the goal node
      * @param path          is the found path from start to goal
      * @param expandedOrder is the order the nodes were expanded
+     * @param expanded is the set of all expanded nodes
+     * @param pathCost is the total cost of the path
      */
     public PathResult {
-    }
-
-    public String[][] getMaze() {
-        return maze;
-    }
-
-    public Node getStart() {
-        return start;
-    }
-
-    public Node getGoal() {
-        return goal;
-    }
-
-    public LinkedList<Node> getPath() {
-        return path;
-    }
-
-    public LinkedList<Node> getExpandedOrder() {
-        return expandedOrder;
     }
 
     /**
@@ -45,5 +28,7 @@ public record PathResult(String[][] maze, Node start, Node goal, LinkedList<Node
         }
         return -1;
     }
+
+
 
 }

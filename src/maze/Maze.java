@@ -89,6 +89,14 @@ public class Maze {
     }
 
     /**
+     * Method to return the set of all expanded nodes
+     * @return set of all expanded nodes
+     */
+    public HashSet<Node> getExpanded() {
+        return expanded;
+    }
+
+    /**
      * Method to get the String at given point
      * @param n is the given point
      * @return the String at point
@@ -182,6 +190,19 @@ public class Maze {
         }
 
         return neighbors;
+    }
+
+    /**
+     * Method to run a given pathfinding algorithm through the maze
+     * (Intended for use through Pathfinder Application, not Separate)
+     * @param algorithm is the algorithm string
+     * @param start is the start node
+     * @param goal is the goal node
+     * @return the PathResult of the pathfinding algorithm
+     */
+    public PathResult runAlgorithm(String algorithm, Node start, Node goal) {
+        resetExpanded(); // Reset Expanded Nodes
+        return PathAlgorithms.runAlgorithm(algorithm, start, goal, this); // Run Pathfinding Algorithm
     }
 
     /**

@@ -10,15 +10,15 @@ public class FileUtils {
     private static final String WALL_CHAR = "_"; // Character used for a wall character
 
     /**
-     * Method to import maze files with given filepath and output a 2D String Array
-     * @param filepath is the given filepath
+     * Method to import maze files with given filename and output a 2D String Array
+     * @param filename is the given filename for a file in the maze file directory
      * @return 2D String Array representation of the maze
      */
-    public static String[][] importMazeFile(String filepath) {
+    public static String[][] importMazeFile(String filename) {
 
         String[][] maze;
         try {
-            BufferedReader br = new BufferedReader(new FileReader(filepath));
+            BufferedReader br = new BufferedReader(new FileReader(MAZE_DIR_PATH + filename));
             String line;
 
             // Create maze.Maze
@@ -49,7 +49,7 @@ public class FileUtils {
             return maze;
         }
         catch (IOException e) {
-            System.err.println("Failed to import file at given path: " + filepath);
+            System.err.println("Failed to import file with given filename: " + filename);
         }
 
         return null;
@@ -68,11 +68,7 @@ public class FileUtils {
             String[] filenames = new String[files.length];
 
             for(int i = 0; i < filenames.length; i++) {
-                String name = files[i].getName(); // Get Name of File
-                if(name.contains(".")) {
-                    name = name.substring(0, name.lastIndexOf(".")); // Remove Extension
-                }
-                filenames[i] = name; // Add to Array
+                filenames[i] = files[i].getName(); // Add to Array
             }
 
             return filenames;
