@@ -5,6 +5,7 @@ import maze.FileUtils;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.net.URL;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -12,7 +13,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
  * Class - Creates a Swing Window for loading maze files
  */
 public class PathfinderWindow extends JFrame {
-    private static final String ICON_PATH = "./resources/icons/luna.png";
+    private final ImageIcon LUNA_ICON = new ImageIcon(getClass().getResource("/icons/luna.png"));
     private String[] filenames;
     private JComboBox<String> filenameComboBox;
 
@@ -31,7 +32,7 @@ public class PathfinderWindow extends JFrame {
      * Method to initialize the frame settings
      */
     private void initFrame() {
-        setIconImage(new ImageIcon(ICON_PATH).getImage());
+        setIconImage(LUNA_ICON.getImage());
         setTitle("Pathfinder");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 120);

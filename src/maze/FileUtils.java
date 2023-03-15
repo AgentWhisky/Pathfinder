@@ -1,12 +1,9 @@
 package maze;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class FileUtils {
-    private static final String MAZE_DIR_PATH = "Resources/mazes/"; // Directory for Maze Files
+    public static final String MAZE_DIR_PATH = "mazes/"; // Directory for Maze Files
     private static final String WALL_CHAR = "_"; // Character used for a wall character
 
     /**
@@ -77,6 +74,53 @@ public class FileUtils {
     }
 
     /**
+     * Method to generate the maze folder and template file if they do not exist
+     */
+    public static void initMazeFile() {
+        File dir = new File(MAZE_DIR_PATH);
+        if(!dir.exists()) {
+            dir.mkdirs();
+            createTemplate();
+        }
+    }
+
+    /**
+     * Method to write a text file with given name and text
+     * @param filepath is the path to write to
+     * @param text is the given text
+     */
+    public static void writeTextToFile(String filepath, String text) {
+        try {
+            FileWriter fw = new FileWriter(filepath);
+            fw.write(text);
+            fw.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to create a template maze file
+     */
+    private static void createTemplate() {
+        String template = """
+                5,6
+                1,1,1,1,1,1
+                1,_,1,1,_,1
+                1,_,1,1,_,1
+                1,_,1,1,_,1
+                _,1,1,1,1,_
+                
+                # This maze has 5 rows and 6 columns.
+                # Open spaces can be any numeric value >= 0 (cost)
+                # Underscores '_' denote walls
+                """;
+
+        writeTextToFile(MAZE_DIR_PATH + "maze-template.txt", template);
+    }
+
+    /**
      * Invalid Maze File Exception
      */
     public static class InvalidMazeException extends RuntimeException {
@@ -84,4 +128,7 @@ public class FileUtils {
             super(msg);
         }
     }
+
+
+
 }

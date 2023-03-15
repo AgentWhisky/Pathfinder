@@ -124,7 +124,7 @@ public class MazeWindow extends JFrame {
         // Add 'Options' Title Label
         JLabel optionsLabel = new JLabel("Options", SwingConstants.CENTER);
         optionsLabel.setFont(UiUtils.getTitleFont());
-        optionsLabel.setBorder(new LineBorder(Color.BLACK, 1));
+        //optionsLabel.setBorder(new LineBorder(Color.BLACK, 1));
 
         // Setup Start and Goal Selection
         JPanel startPanel = new JPanel();
@@ -149,7 +149,7 @@ public class MazeWindow extends JFrame {
         buttonPanel.setLayout(new GridLayout());
         runButton = new JButton("Run");
         runButton.addActionListener(e ->{
-            execute();
+            executePathfinder();
         });
 
         // Reset Button
@@ -279,7 +279,7 @@ public class MazeWindow extends JFrame {
         boolean showPath;
 
         public MazePanel() {
-            setBorder(new LineBorder(Color.BLACK, 1));
+            //setBorder(new LineBorder(Color.BLACK, 1));
             timer = new Timer(100, this); // Setup Timer (Default 100ms)
             showPath = false;
         }
@@ -371,13 +371,16 @@ public class MazeWindow extends JFrame {
                             drawText(g2, x, y, tileSize, "S");
                         }
                         case TILE_GOAL -> {
-                            g2.setColor(Color.GREEN);
+                            g2.setColor(Color.ORANGE);
                             g2.fillRect(x, y, tileSize, tileSize);
                             drawText(g2, x, y, tileSize, "G");
                         }
                         case TILE_PATH -> {
                             g2.setColor(Color.GREEN);
                             g2.fillRect(x, y, tileSize, tileSize);
+
+                            drawArrow(g2, 0, x, y, tileSize);
+
                             drawText(g2, x, y, tileSize, maze.getTileStr(curNode));
                         }
                         case TILE_EXPANDED -> {
@@ -437,6 +440,29 @@ public class MazeWindow extends JFrame {
         public void killTimer() {
             timer.stop();
         }
+
+        private void drawArrow(Graphics2D g2, int direction, int x, int y, int size) {
+
+            System.out.println(x + "," + y + "," + size);
+            g2.setColor(Color.BLACK);
+
+            // X Values
+            int left = x;
+            int right = x + size;
+            int middleX = x + size/2;
+            // Y Values
+            int top = y;
+            int bottomY = y + size;
+            int middleY = y + size/2;
+
+
+            switch (direction) {
+                case 0 -> {
+                    g2.drawPolygon(new int[]{left, middleX, right}, new int[]{middleY, top, middleY}, 3);
+                }
+            }
+
+        }
     }
 
     // *** Utility Methods ***
@@ -447,9 +473,25 @@ public class MazeWindow extends JFrame {
     /**
      * Method to begin execution of the current algorithm on the maze
      */
-    public void execute() {
+    public void executePathfinder() {
+        // Return if No Algorithm Selected
+        if(algorithmCombobox.getSelectedIndex() == -1) {
+            return;
+        }
+
+        // Return if Start or Goal has not been set
+        if(start == null || goal == null) {
+            return;
+        }
+
+        // Return if start = goal
+        if(start.equals(goal)) {
+            return;
+        }
+
+        // Execute Path Algorithm
         Object algo = algorithmCombobox.getSelectedItem();
-        if(algo != null) {
+        if (algo != null) {
             String algoName = algo.toString();
             pathResult = maze.runAlgorithm(algoName, start, goal);
             mazePanel.startExpandedDisplay();
@@ -458,6 +500,7 @@ public class MazeWindow extends JFrame {
             pathLength.setText("Path Length: " + pathResult.pathLength());
             pathCost.setText("Path Cost: " + pathResult.pathCost());
         }
+
     }
 
     /**
