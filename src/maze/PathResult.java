@@ -13,9 +13,17 @@ public record PathResult(String[][] maze, Node start, Node goal, LinkedList<Node
      * @param path          is the found path from start to goal
      * @param expandedOrder is the order the nodes were expanded
      * @param expanded is the set of all expanded nodes
-     * @param pathCost is the total cost of the path
+     * @param pathCost is the total costHeuristic of the path
      */
     public PathResult {
+        // Push all Node Directions Back One To Accurately reflect their direction
+        Node prev = null;
+        for(Node n : path) {
+            if(prev != null) {
+                prev.setDirection(n.getDirection());
+            }
+            prev = n;
+        }
     }
 
     /**
@@ -28,7 +36,4 @@ public record PathResult(String[][] maze, Node start, Node goal, LinkedList<Node
         }
         return -1;
     }
-
-
-
 }

@@ -3,13 +3,13 @@ package maze;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.WeakHashMap;
 
 /**
  * Class to store a maze.Maze Object with useful functions for pathfinding
  */
 public class Maze {
     private static final String WALL = "_";
-
     private final String[][] map;
 
     // Expanded Nodes
@@ -43,7 +43,7 @@ public class Maze {
      * @return if the node is valid
      */
     public boolean isValidNode(Node n) {
-        return (n.x() >= 0 && n.x() < getHeight()) && (n.y() >= 0 && n.y() < getWidth());
+        return (n.getX() >= 0 && n.getX() < getHeight()) && (n.getY() >= 0 && n.getY() < getWidth());
     }
 
     /**
@@ -102,7 +102,7 @@ public class Maze {
      * @return the String at point
      */
     public String getTileStr(Node n) {
-        return map[n.x()][n.y()];
+        return map[n.getX()][n.getY()];
     }
 
     /**
@@ -122,9 +122,9 @@ public class Maze {
     }
 
     /**
-     * Method to get the cost of a point on the board
+     * Method to get the costHeuristic of a point on the board
      * @param n is the given point
-     * @return the cost at point or default 0 if point is a wall (Ensure no given point is a wall)
+     * @return the costHeuristic at point or default 0 if point is a wall (Ensure no given point is a wall)
      */
     public int getCost(Node n) {
         String s = getTileStr(n);
@@ -162,14 +162,14 @@ public class Maze {
 
         LinkedList<Node> neighbors = new LinkedList<>();
 
-        int x = n.x();
-        int y = n.y();
+        int x = n.getX();
+        int y = n.getY();
 
         // N,S,E,W
-        Node north = new Node(x-1, y);
-        Node south = new Node(x+1, y);
-        Node east = new Node(x, y+1);
-        Node west = new Node(x, y-1);
+        Node north = new Node(x-1, y, Node.NORTH);
+        Node south = new Node(x+1, y, Node.SOUTH);
+        Node east = new Node(x, y+1, Node.EAST);
+        Node west = new Node(x, y-1, Node.WEST);
 
         if(isOpen(north)) {
             neighbors.add(north);
@@ -188,7 +188,6 @@ public class Maze {
             // Shuffle LinkedList to prevent path algorithms favoring specific directions
             Collections.shuffle(neighbors);
         }
-
         return neighbors;
     }
 
@@ -226,5 +225,36 @@ public class Maze {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Method to get the manhattan distance between two nodes
+     * @param a is the first node
+     * @param b is the second node
+     * @return manhattan distance between given nodes
+     */
+    public int getManhattanDistance(Node a, Node b) {
+        return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
+    }
+
+    /**
+     * Given a path (Including Start and Goal) get the costHeuristic
+     * which includes only nodes moved INTO (which excludes the start node)
+     * @param path is the given path which must include the Start and Goal nodes
+     * @return the costHeuristic of the given path
+     */
+    public int getCostFromPath(LinkedList<Node> path) {
+        int pathCost = 0;
+
+        boolean skipFirst = false;
+        for(Node n : path) {
+            if(skipFirst) {
+                pathCost += getCost(n);
+            }
+            else {
+                skipFirst = true;
+            }
+        }
+        return pathCost;
     }
 }
