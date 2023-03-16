@@ -572,7 +572,6 @@ public class MazeWindow extends JFrame {
             }
             // New Delay = DEFAULT / 2^multiplier
             int newDelay = DEFAULT_TIMER_DELAY / (int)(Math.pow(2, multiplier));
-            System.out.println(newDelay);
 
             timer.setDelay(newDelay);
         }

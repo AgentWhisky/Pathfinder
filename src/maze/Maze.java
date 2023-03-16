@@ -237,6 +237,8 @@ public class Maze {
         return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
     }
 
+
+
     /**
      * Given a path (Including Start and Goal) get the costHeuristic
      * which includes only nodes moved INTO (which excludes the start node)

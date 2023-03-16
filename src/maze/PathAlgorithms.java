@@ -223,15 +223,15 @@ public class PathAlgorithms {
         // The Heuristic used in this algorithm is the Manhattan Distance between a Node and the given Goal
 
         // Record for Storing NodePath and Priority Cost
-        record AStarNodePath(NodePath nodePath, int costHeuristic) {}
+        record AStarNodePath(NodePath nodePath, int cost, int heuristic) {}
 
         // Setup Priority Queue
-        PriorityQueue<AStarNodePath> npPQueue = new PriorityQueue<>(Comparator.comparingInt(AStarNodePath::costHeuristic));
+        PriorityQueue<AStarNodePath> npPQueue = new PriorityQueue<>(Comparator.comparingInt(o -> (o.cost() + o.heuristic())));
 
         // Add Start to Priority Queue
         LinkedList<Node> path = new LinkedList<>();
         path.add(start);
-        npPQueue.add(new AStarNodePath(new NodePath(start, path), 0));
+        npPQueue.add(new AStarNodePath(new NodePath(start, path), 0, 0));
 
         // Setup Visited Node Set
         HashSet<Node> visited = new HashSet<>();
@@ -240,7 +240,7 @@ public class PathAlgorithms {
         while(!npPQueue.isEmpty()) {
             // Pop from Priority Queue
             AStarNodePath pnp = npPQueue.poll();
-            int curCost = pnp.costHeuristic();
+            int curCost = pnp.cost();
             Node curNode = pnp.nodePath().node();
 
             // Check if current node is the goal
@@ -273,10 +273,11 @@ public class PathAlgorithms {
                     newPath.add(n);
 
                     // Get New Cost for Priority = Total Cost + Heuristic Distance to Goal
-                    int newCost = (m.getCost(n) + curCost) + m.getManhattanDistance(n, goal);
+                    int newCost = m.getCost(n) + curCost;
+                    int newHeuristic = m.getManhattanDistance(n, goal);
 
                     // Add To Priority Queue
-                    npPQueue.add(new AStarNodePath(new NodePath(n, newPath), newCost));
+                    npPQueue.add(new AStarNodePath(new NodePath(n, newPath), newCost, newHeuristic));
                 }
             }
 
