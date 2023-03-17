@@ -20,11 +20,11 @@ public class MazeWindow extends JFrame {
     public static final Color COLOR_TILE_BOX = new Color(44, 44, 44);
     public static final Color COLOR_WALL = new Color(83, 83, 83);
     public static final Color COLOR_OPEN = new Color(239, 239, 239);
-    public static final Color COLOR_START = new Color(95, 255, 0);
-    public static final Color COLOR_GOAL = new Color(20, 122, 252);
-    public static final Color COLOR_PATH = new Color(153,249,146);
+    public static final Color COLOR_START = new Color(243, 138, 0);
+    public static final Color COLOR_GOAL = new Color(252, 192, 3);
+    public static final Color COLOR_PATH = new Color(14, 252, 0);
     public static final Color COLOR_EXPANDED = new Color(133,16,0);
-    public static final Color COLOR_ARROW = new Color(10, 63, 229);
+    public static final Color COLOR_ARROW = new Color(0, 0, 0);
     public static final Color COLOR_TEXT = Color.BLACK;
 
     // Load Icon
@@ -623,8 +623,7 @@ public class MazeWindow extends JFrame {
                 case Node.NORTH -> g2.fillPolygon(
                         new int[]{x + size/4, x + size/2, x + 3*(size/4)},
                         new int[]{y + size/4, y, y + size/4},
-                        3
-                );
+                        3);
                 case Node.SOUTH -> g2.fillPolygon(
                         new int[]{x + size/4, x + size/2, x + 3*(size/4)},
                         new int[]{y + 3*(size/4), y + size, y + 3*(size/4)},

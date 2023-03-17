@@ -1,15 +1,14 @@
 # Pathfinder
 
-### Description
 * An Interactive Application to visualize different pathfinding algorithms
 
 * Current Algorithms:
   * Depth First Search
   * Breadth First Search
-  
-* To Be Added (Not an Exhaustive List):
   * Uniform Cost Search
   * A* Search
+  
+* More Algorithms to be added in the future
   
 
 ### New GUI for Pathfinder
@@ -24,6 +23,7 @@
 ![Alt text](./resources/readme/maze-hard1-pre.png?raw=true "BFS Path")
 
 * The final result will display the expansion of nodes to easily visualize how the algorithm progresses
-  * Variable Speed of Display to be added
+  * Includes variable speed display for node expansion
+  * Cost and Path Direction is Toggleable 
 
 ![Alt text](./resources/readme/maze-hard1-run.png?raw=true "BFS Path")
